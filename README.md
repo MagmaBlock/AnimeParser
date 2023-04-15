@@ -1,7 +1,8 @@
 # AnimeParser
-解析日本动画视频的文件名为 JavaScript Object 或可标签化显示的数组。
 
-Parsing Japan anime video's name to JavaScript Object or array of tagged name which can be displayed.
+Parses the filename of Japanese anime video into JavaScript object or an array of tagged names, which can be beautifully displayed.
+
+解析日本动画视频的文件名为 JavaScript Object 或可标签化显示的数组。
 
 # Usage
 
