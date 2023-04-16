@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "aniep": "^0.4.0",
+    "chinese-parseint": "^1.2.1",
     "lodash": "^4.17.21"
   }
 }

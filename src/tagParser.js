@@ -1,5 +1,6 @@
 import _ from "lodash";
 import aniep from "aniep";
+import chineseParseInt from "chinese-parseint";
 
 import dict from "../assets/tagsDict.js";
 
@@ -59,8 +60,12 @@ export function parseFileName(fileName) {
       }
       // 匹配失败，可能是词库中没有此发布组或首个 [] 并非发布组
       if (isGroup === null) {
-        if (firstBlock.length == 1 && firstBlock[0].match(" ")) {
-          // 如果当前词匹配失败，且首个 [] 中仅分割出一个词，且这个词中还有空格，那么首个 [] 极有可能不是发布组名而是作品名 (如 c.c动漫)
+        if (
+          firstBlock.length == 1 &&
+          (firstBlock[0].match(/ |\?|\!|,|？|！|，|。/) ||
+            firstBlock[0].match(/ARTE|RideBack/i))
+        ) {
+          // 如果当前词匹配失败，且首个 [] 中仅分割出一个词，且这个词中还有空格逗号感叹号问号全角句号，那么首个 [] 极有可能不是发布组名而是作品名 (如 c.c动漫)
           // 如果满足此条件，进入当前 if，这时我们判断文件名中不存在发布组名，且这个块应该是作品标题.
           parseResult.animeTitle = firstBlock[0];
         } else {
@@ -78,7 +83,7 @@ export function parseFileName(fileName) {
   /* 处理非发布组部分 */
   // 将首个 [] 删除.
   let nameNoFirstBlock = trueName.replace(/^\[.*?\]/, "");
-  nameNoFirstBlock = nameNoFirstBlock.split(/\[|\]|\(|\)|-|_| /); // 这次用 [ ] ( ) - _ 还有空格拆开
+  nameNoFirstBlock = nameNoFirstBlock.split(/\[|\]|\(|\)| /); // 这次用 [ ] ( ) 还有空格拆开
   // 整理一下
   nameNoFirstBlock = _.concat(...nameNoFirstBlock); // 将零散的数组合并
   nameNoFirstBlock = tidyStringArray(nameNoFirstBlock); // trim 和删除空格
@@ -92,20 +97,42 @@ export function parseFileName(fileName) {
   nameNoFirstBlock = tidyStringArray(nameNoFirstBlock);
 
   // 1. 第一次尝试：利用 aniep 找到的集数找出可能的标题文本
-  for (let i in nameNoFirstBlock) {
-    let isEp = parseFloat(nameNoFirstBlock[i]);
-    if (typeof isEp == "number" && isEp == parseResult.episode) {
-      let title = "";
-      for (let j in nameNoFirstBlock) {
-        if (j == i) break;
-        title = title + nameNoFirstBlock[j] + " ";
-      }
-      // 找到标题文本，且目前 title 为 null
-      if (title && parseResult.animeTitle === null) {
-        parseResult.animeTitle = title;
+  if (parseResult.animeTitle === null && parseResult.episode !== null) {
+    for (let i in nameNoFirstBlock) {
+      if (
+        parseFloat(nameNoFirstBlock[i]) == parseResult.episode ||
+        chineseParseInt(nameNoFirstBlock[i]) == parseResult.episode
+      ) {
+        // 找到集数的位置
+        let title = "";
+        // 将发布组后，集数前的部分进行遍历
+        for (let j in nameNoFirstBlock) {
+          if (j == i) break; // 遍历到达集数位置，停止遍历
+          if (nameNoFirstBlock[j].match(/BDRip|WebRip|DVDRip|AVC|1080P|720P/i))
+            break; // fix some bad name
+          if (nameNoFirstBlock[j].match(/(OVA|SP|OAD|NCOP|NCED)\d{1,2}/i))
+            break; // OVA SP 等类型到达结尾
+          if (nameNoFirstBlock[j].match(/^-|_&/)) continue; // 跳过符号词
+          title = title + nameNoFirstBlock[j] + " ";
+        }
+        // 找到标题文本
+        if (title) {
+          parseResult.animeTitle = title;
+        }
       }
     }
   }
+
+  // 判断 title 后，再拆开没拆开的 - 和 _
+  let newArray = [];
+  for (let word of nameNoFirstBlock) {
+    if (typeof word == "string") {
+      word = word.split(/\-|_/);
+      newArray.push(...word);
+    } else newArray.push(word);
+  }
+  // 整理一下
+  nameNoFirstBlock = tidyStringArray(newArray); // trim 和删除空格
 
   // 遍历每个被分割的词汇，将他们替换为含有结果的对象，最有用的部分
   for (let i in nameNoFirstBlock) {
@@ -151,6 +178,9 @@ export function parseFileName(fileName) {
       for (let word of nameNoFirstBlock) {
         if (typeof word != "string") {
           break;
+        }
+        if (word.match(/^-|_$/)) {
+          continue;
         }
         if (parseResult.animeTitle === null) parseResult.animeTitle = "";
         parseResult.animeTitle = parseResult.animeTitle + word + " ";
