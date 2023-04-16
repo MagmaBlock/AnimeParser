@@ -2,7 +2,7 @@ import { parseFileName } from "../src/tagParser.js";
 
 import { readFileSync, writeFileSync } from "fs";
 
-const answerFile = readFileSync("./answer.txt", "utf-8");
+const answerFile = readFileSync("./test/answer.txt", "utf-8");
 
 const answerList = new Map(
   answerFile
@@ -35,4 +35,4 @@ for (let file of allResult) {
   resultTxt = resultTxt + thisResult + "\n\n";
 }
 
-writeFileSync("./testResult.txt", resultTxt);
+writeFileSync("./test/testResult.txt", resultTxt);
