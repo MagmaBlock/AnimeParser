@@ -1,5 +1,5 @@
 {
-  "name": "animeparser",
+  "name": "anime-file-parser",
   "version": "1.0.0",
   "description": "A tool to parse anime file name",
   "type": "module",
@@ -13,5 +13,23 @@
     "aniep": "^0.4.0",
     "chinese-parseint": "^1.2.1",
     "lodash": "^4.17.21"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagmaBlock/AnimeParser.git"
+  },
+  "keywords": [
+    "Anime",
+    "Bangumi",
+    "JapanAnime",
+    "Parser"
+  ],
+  "bugs": {
+    "url": "https://github.com/MagmaBlock/AnimeParser/issues"
+  },
+  "homepage": "https://github.com/MagmaBlock/AnimeParser#readme"
 }
