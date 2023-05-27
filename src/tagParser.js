@@ -202,8 +202,10 @@ export function parseFileName(fileName) {
   // 判断 noBrowser
   for (let tag of parseResult.tagedName) {
     if (typeof tag == "object") {
-      if (tag.noBrowser) parseResult.noBrowser = true;
-      break;
+      if (tag.noBrowser) {
+        parseResult.noBrowser = true;
+        break;
+      }
     }
   }
 
@@ -245,7 +247,12 @@ function matchThisWord(word) {
       let thisWordReplaced = !word.replace(thisRule.from, "").trim();
       // 匹配成功的逻辑
       if (thisWordReplaced) {
-        return { result: thisRule.to, raw: word, type: dictName };
+        return {
+          result: thisRule.to,
+          raw: word,
+          type: dictName,
+          noBrowser: thisRule.noBrowser,
+        };
       }
     }
   }

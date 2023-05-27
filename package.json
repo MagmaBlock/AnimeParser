@@ -1,6 +1,6 @@
 {
   "name": "anime-file-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tool to parse anime file name",
   "type": "module",
   "main": "index.js",

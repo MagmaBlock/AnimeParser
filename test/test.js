@@ -22,6 +22,7 @@ for (let file of allResult) {
   let thisResult = `${file.fileName}
 发布组：${file.groups.map((group) => `[${group.result}]`)}
 标题：<${file.animeTitle}>${file.animeYear ? ' ' + file.animeYear : ""} [${file.episode}]
+noBrowser: ${file.noBrowser}
 `;
 
   for (let tag of file.tagedName) {
