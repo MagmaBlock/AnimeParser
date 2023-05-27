@@ -38,6 +38,9 @@ export function parseFileName(fileName) {
   if (typeof thisEpisode == "string") {
     thisEpisode = thisEpisode.replace("|", "/");
   }
+  if (typeof thisEpisode == "number") {
+    thisEpisode = new String(thisEpisode);
+  }
   parseResult.episode = thisEpisode;
 
   /* 开始匹配发布组 */
