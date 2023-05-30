@@ -10,6 +10,8 @@ import dict from "../assets/tagsDict.js";
  * @returns {Object}
  */
 export function parseFileName(fileName) {
+  if (!fileName) return null;
+
   let parseResult = {
     animeTitle: null,
     animeYear: null,
