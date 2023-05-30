@@ -41,7 +41,7 @@ export function parseFileName(fileName) {
     thisEpisode = thisEpisode.replace("|", "/");
   }
   if (typeof thisEpisode == "number") {
-    thisEpisode = new String(thisEpisode);
+    thisEpisode = thisEpisode.toString();
   }
   parseResult.episode = thisEpisode;
 
