@@ -104,18 +104,22 @@ export function parseFileName(fileName) {
   // 1. 第一次尝试：利用 aniep 找到的集数找出可能的标题文本
   if (parseResult.animeTitle === null && parseResult.episode !== null) {
     for (let i in nameNoFirstBlock) {
+      // 找到集数的位置
       if (
         parseFloat(nameNoFirstBlock[i]) == parseResult.episode ||
         chineseParseInt(nameNoFirstBlock[i]) == parseResult.episode
       ) {
-        // 找到集数的位置
         let title = "";
         // 将发布组后，集数前的部分进行遍历
         for (let j in nameNoFirstBlock) {
           if (j == i) break; // 遍历到达集数位置，停止遍历
-          if (nameNoFirstBlock[j].match(/BDRip|WebRip|DVDRip|AVC|1080P|720P/i))
+          if (
+            nameNoFirstBlock[j].match(
+              /(BD|Web|DVD)(Rip|-DL){0,1}|AVC|HEVC|((H|X).{0,1}(264|265))|1080P|720P|480P/i
+            )
+          )
             break; // fix some bad name
-          if (nameNoFirstBlock[j].match(/(OVA|SP|OAD|NCOP|NCED)\d{1,2}/i))
+          if (nameNoFirstBlock[j].match(/(OVA|SP|OAD|NCOP|NCED|SONG)\d{0,3}/i))
             break; // OVA SP 等类型到达结尾
           if (nameNoFirstBlock[j].match(/^-|_&/)) continue; // 跳过符号词
           title = title + nameNoFirstBlock[j] + " ";
@@ -123,6 +127,7 @@ export function parseFileName(fileName) {
         // 找到标题文本
         if (title) {
           parseResult.animeTitle = title;
+          break; // 终止外层遍历避免后方再次出现和集数相同的数字
         }
       }
     }
@@ -180,13 +185,17 @@ export function parseFileName(fileName) {
     }
     // tag 匹配结果中有 Object，才使用下面的逻辑计算文件名
     if (hasObj) {
+      // 从第一个 [] 之后开始向后遍历
       for (let word of nameNoFirstBlock) {
+        // 遇到 Object 停止遍历, 通常是因为遇到了资源标识，说明标题已经结束
         if (typeof word != "string") {
           break;
         }
+        // 抛弃标题中的横杠
         if (word.match(/^-|_$/)) {
           continue;
         }
+        // 开始写标题
         if (parseResult.animeTitle === null) parseResult.animeTitle = "";
         parseResult.animeTitle = parseResult.animeTitle + word + " ";
       }
