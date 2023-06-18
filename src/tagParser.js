@@ -261,12 +261,14 @@ function matchThisWord(word) {
       let thisWordReplaced = !word.replace(thisRule.from, "").trim();
       // 匹配成功的逻辑
       if (thisWordReplaced) {
-        return {
+        let result = {
           result: thisRule.to,
           raw: word,
           type: dictName,
-          noBrowser: thisRule.noBrowser,
         };
+        if (thisRule.noBrowser) {
+          result.noBrowser = true;
+        }
       }
     }
   }
