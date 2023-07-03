@@ -146,10 +146,8 @@ export function parseFileName(fileName) {
 
   // 遍历每个被分割的词汇，将他们替换为含有结果的对象，最有用的部分
   for (let i in nameNoFirstBlock) {
-    console.log(nameNoFirstBlock[i]);
     let result = matchThisWord(nameNoFirstBlock[i]);
     nameNoFirstBlock[i] = result ?? nameNoFirstBlock[i];
-    console.log(nameNoFirstBlock[i]);
 
     // 匹配成功时，除了将 tag 加入 tagedName, 还加入 parseResult 其他的分类的列表中
     if (result) {
