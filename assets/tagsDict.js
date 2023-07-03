@@ -221,7 +221,8 @@ const dict = {
   ],
   format: [
     // 此中的正则会单独对整个文件名匹配一次，不会和其他的冲突
-    { from: /ass/gi, to: "ASS外挂字幕", type: "subtitle" },
+    { from: /ass|ssa/gi, to: "ASS外挂字幕", type: "subtitle" },
+    { from: /srt/gi, to: "SRT外挂字幕", type: "subtitle" },
     { from: /mp4/gi, to: "MP4视频", type: "video" },
     { from: /mkv/gi, to: "MKV视频", type: "video" },
     { from: /(png|jpg|jpeg|gif|bmp|tif|svg)/gi, to: "图片", type: "image" },
