@@ -14,14 +14,16 @@ const answerList = new Map(
 let allResult = [];
 
 for (let file of answerList.keys()) {
-  if (Math.random() <= 1) allResult.push(parseFileName(file));
+  if (Math.random() <= 0.05) allResult.push(parseFileName(file));
 }
 
 let resultTxt = "";
 for (let file of allResult) {
   let thisResult = `${file.fileName}
 发布组：${file.groups.map((group) => `[${group.result}]`)}
-标题：<${file.animeTitle}>${file.animeYear ? ' ' + file.animeYear : ""} [${file.episode}]
+标题：<${file.animeTitle}>${file.animeYear ? " " + file.animeYear : ""} [${
+    file.episode
+  }]
 noBrowser: ${file.noBrowser}
 `;
 
@@ -36,4 +38,4 @@ noBrowser: ${file.noBrowser}
   resultTxt = resultTxt + thisResult + "\n\n";
 }
 
-writeFileSync("./test/testResult.txt", resultTxt);
+writeFileSync("./test/testResult.json", JSON.stringify(allResult, null, 2));
