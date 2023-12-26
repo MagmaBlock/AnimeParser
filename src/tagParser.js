@@ -1,7 +1,6 @@
 import _ from "lodash";
 import aniep from "aniep";
 import chineseParseInt from "chinese-parseint";
-import path from "path";
 
 import dict from "../assets/tagsDict.js";
 
@@ -304,8 +303,10 @@ function garbageCleaner(word) {
  */
 function getExtensionName(fileName) {
   // 获取拓展名
-  let parsedPath = path.parse(fileName);
-  let extNameWithoutDot = parsedPath.ext.replace(/^\./, "");
+  const dot = fileName.lastIndexOf('.')
+	const name = fileName.substring(0, dot)
+	const ext = fileName.substring(dot)
+  let extNameWithoutDot = ext.replace(/^\./, "");
 
   for (let i in dict.format) {
     let thisDict = dict.format[i];
@@ -315,12 +316,12 @@ function getExtensionName(fileName) {
         result: thisDict.to,
         type: thisDict.type,
         raw: extNameWithoutDot,
-        trueName: parsedPath.name,
+        trueName: name,
       };
     }
   }
   if (extNameWithoutDot.length <= 5)
-    return { raw: extNameWithoutDot, trueName: parsedPath.name };
+    return { raw: extNameWithoutDot, trueName: name };
   else return null;
 }
 
