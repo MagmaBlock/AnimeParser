@@ -31,5 +31,6 @@
   "bugs": {
     "url": "https://github.com/MagmaBlock/AnimeParser/issues"
   },
-  "homepage": "https://github.com/MagmaBlock/AnimeParser#readme"
+  "homepage": "https://github.com/MagmaBlock/AnimeParser#readme",
+  "deprecated": "This package has been archived and will not be maintained. You can use anime-name-tool instead."
 }

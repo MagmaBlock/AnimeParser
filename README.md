@@ -1,3 +1,11 @@
+# ⚠️ Deprecated
+
+This package has been archived and will not be maintained.
+You can use anime-name-tool instead.
+
+此库已被归档，将不会再维护。
+你可以使用 anime-name-tool 来代替。
+
 # AnimeParser
 
 Parses the filename of Japanese anime video into JavaScript object or an array of tagged names, which can be beautifully displayed.
